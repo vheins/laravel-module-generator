@@ -1,6 +1,6 @@
 <?php
 
-namespace Vheins\ModuleGenerator\Console;
+namespace Vheins\LaravelModuleGenerator\Console;
 
 use Illuminate\Support\Str;
 use Nwidart\Modules\Support\Stub;
