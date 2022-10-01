@@ -90,7 +90,7 @@ class LaravelModuleGeneratorServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../laravel-module-generator.php', 'laravel-module-generator');
 
         $this->publishes([__DIR__ . '/../module.php' => config_path('module.php'),], 'config');
-        $this->mergeConfigFrom(__DIR__ . '/../module.php', 'module');
+        $this->mergeConfigFrom(__DIR__ . '/../modules.php', 'modules');
 
 
         $this->publishes([
