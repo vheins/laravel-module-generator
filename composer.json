@@ -14,7 +14,6 @@
         "Generator"
     ],
     "require": {
-        "illuminate/support": "9.x",
         "nwidart/laravel-modules": "^9.0"
     },
     "extra": {
