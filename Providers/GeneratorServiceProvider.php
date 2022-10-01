@@ -43,10 +43,10 @@ class GeneratorServiceProvider extends ServiceProvider
     protected function registerConfig()
     {
         $this->publishes([
-            __DIR__ . '/config.php' => config_path($this->moduleNameLower . '.php'),
+            __DIR__ . '/../config.php' => config_path($this->moduleNameLower . '.php'),
         ], 'config');
         $this->mergeConfigFrom(
-            __DIR__ . '/config.php',
+            __DIR__ . '/../config.php',
             $this->moduleNameLower
         );
     }
