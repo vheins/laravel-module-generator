@@ -19,9 +19,11 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Vheins\\LaravelModuleGenerator\\Providers\\GeneratorServiceProvider"
+                "Vheins\\LaravelModuleGenerator\\Providers\\LaravelModuleGeneratorServiceProvider"
             ],
-            "aliases": {}
+            "aliases": {
+                "ModuleGenerator": "Vheins\\LaravelModuleGenerator\\Facades\\LaravelModuleGenerator"
+            }
         }
     },
     "autoload": {
