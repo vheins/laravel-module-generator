@@ -17,7 +17,7 @@ use Vheins\LaravelModuleGenerator\Console\CreateModuleVueComponentTab;
 use Vheins\LaravelModuleGenerator\Console\CreateModuleVuePageCreate;
 use Vheins\LaravelModuleGenerator\Console\CreateModuleVuePageIndex;
 use Vheins\LaravelModuleGenerator\Console\CreateModuleVuePageView;
-use Vheins\LaravelModuleGenerator\Console\CreateModuleVuePageStore;
+use Vheins\LaravelModuleGenerator\Console\CreateModuleVueStore;
 use Vheins\LaravelModuleGenerator\Console\CreatePermission;
 
 
@@ -74,7 +74,7 @@ class LaravelModuleGeneratorServiceProvider extends ServiceProvider
             CreateModuleVuePageCreate::class,
             CreateModuleVuePageIndex::class,
             CreateModuleVuePageView::class,
-            CreateModuleVuePageStore::class,
+            CreateModuleVueStore::class,
             CreatePermission::class,
         ]);
     }
