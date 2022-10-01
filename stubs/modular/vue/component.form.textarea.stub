@@ -1,0 +1,16 @@
+                <div class="uk-margin">
+                    <label class="uk-form-label" for="form-horizontal-text">$TITLE$</label>
+                    <div class="uk-form-controls uk-inline  uk-width-1-1">
+                        <textarea class="uk-textarea uk-form-small" v-model="form.$VAR_NAME$"
+                            :class="{ 'uk-form-danger': response.errors && response.errors.$VAR_NAME$ }"
+                            :disabled="store.isView"/>
+                        <span class=" uk-form-icon uk-form-icon-flip" v-if="response.errors && response.errors.$VAR_NAME$">
+                            <AlertCircleIcon color='red' />
+                        </span>
+                    </div>
+                    <div v-if="response.errors && response.errors.$VAR_NAME$">
+                        <div class="uk-link-reset uk-text-small uk-text-danger">
+                            {{ response.errors.$VAR_NAME$.toString() }}
+                        </div>
+                    </div>
+                </div>

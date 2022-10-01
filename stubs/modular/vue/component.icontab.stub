@@ -1,0 +1,58 @@
+<script>
+export default {
+    props: {
+        type: String,
+    },
+    setup() {
+        const auth = useAuthStore();
+        const can = auth.can;
+        return { can };
+    },
+    data() {
+        return {
+            tabs: [
+                {
+                    title: '$NAME$',
+                    link: '/dashboard/$API_ROUTE$',
+                    icon: 'AppsIcon',
+                    permission: 'module.$LOWER_NAME$',
+                },
+                //add tabs here ...
+            ]
+        }
+    }
+}
+</script>
+
+<template>
+    <div class="uk-overflow-auto uk-flex" v-if="type!='icon'">
+        <ul class="uk-margin-remove-vertical" uk-tab>
+            <template v-for="tab in tabs" :key="tab.link">
+                <li v-if="can(`${tab.permission}-index`)"
+                    :class="{ 'uk-active': $route.path == tab.link}">
+                    <RouterLink :to="tab.link">
+                        <component v-bind:is="tab.icon" /> {{tab.title}}
+                    </RouterLink>
+                </li>
+            </template>
+        </ul>
+    </div>
+    <template v-else>
+        <div class="uk-grid-match uk-grid-small uk-child-width-1-4@l uk-child-width-1-2 uk-padding-small uk-margin-small-top uk-grid"
+            uk-grid>
+            <div v-for="tab in tabs" :key="tab.link">
+                <RouterLink :to="tab.link">
+                    <div class="uk-card uk-card-default uk-padding-small uk-text-center remove-top-border">
+                        <component v-bind:is="tab.icon" />
+                        <h3 class="uk-heading-primary uk-margin-remove uk-text-default">
+                            {{tab.title}}
+                        </h3>
+                        <!-- <div class="uk-text-small">
+                            <span class="uk-text-muted uk-visible@m"> Setting master perusahaan </span>
+                        </div> -->
+                    </div>
+                </RouterLink>
+            </div>
+        </div>
+    </template>
+</template>

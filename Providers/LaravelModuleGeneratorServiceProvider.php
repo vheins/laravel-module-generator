@@ -86,13 +86,16 @@ class LaravelModuleGeneratorServiceProvider extends ServiceProvider
      */
     protected function registerConfig()
     {
+        $this->publishes([__DIR__ . '/../laravel-module-generator.php' => config_path('laravel-module-generator.php'),], 'config');
+        $this->mergeConfigFrom(__DIR__ . '/../laravel-module-generator.php', 'laravel-module-generator');
+
+        $this->publishes([__DIR__ . '/../module.php' => config_path('module.php'),], 'config');
+        $this->mergeConfigFrom(__DIR__ . '/../module.php', 'module');
+
+
         $this->publishes([
-            __DIR__ . '/../config.php' => config_path($this->moduleNameLower . '.php'),
-        ], 'config');
-        $this->mergeConfigFrom(
-            __DIR__ . '/../config.php',
-            $this->moduleNameLower
-        );
+            __DIR__ . '/../stubs' => base_path('stubs'),
+        ], 'stubs');
     }
 
 
