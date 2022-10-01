@@ -1,0 +1,22 @@
+{
+    "name": "vheins/laravel-module-generator",
+    "description": "",
+    "type": "laravel-module",
+    "authors": [
+        {
+            "name": "Muhammad Rheza Alfin",
+            "email": "aRhez0903@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {}
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Vheins\\LaravelModuleGenerator\\": ""
+        }
+    }
+}
