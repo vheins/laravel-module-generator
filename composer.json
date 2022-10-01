@@ -1,6 +1,6 @@
 {
     "name": "vheins/laravel-module-generator",
-    "description": "",
+    "description": "Generate Laravel Modules from a template.",
     "type": "laravel-module",
     "authors": [
         {
@@ -8,9 +8,20 @@
             "email": "aRhez0903@gmail.com"
         }
     ],
+    "keywords": [
+        "Laravel",
+        "Laravel Modules",
+        "Generator"
+    ],
+    "require": {
+        "illuminate/support": "9.x",
+        "nwidart/laravel-modules": "^9.0"
+    },
     "extra": {
         "laravel": {
-            "providers": [],
+            "providers": [
+                "Vheins\\LaravelModuleGenerator\\Providers\\GeneratorServiceProvider"
+            ],
             "aliases": {}
         }
     },
