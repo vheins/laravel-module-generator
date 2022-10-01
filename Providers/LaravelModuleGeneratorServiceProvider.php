@@ -21,7 +21,7 @@ use Vheins\LaravelModuleGenerator\Console\CreateModuleVuePageStore;
 use Vheins\LaravelModuleGenerator\Console\CreatePermission;
 
 
-class LaravelModuleGeneratorServiceProvider extends ServiceProvider`
+class LaravelModuleGeneratorServiceProvider extends ServiceProvider
 {
     /**
      * @var string $moduleName
