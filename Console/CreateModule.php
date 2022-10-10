@@ -100,7 +100,7 @@ class CreateModule extends Command
         //Create Store Action
         $storeActionFile = base_path() . "/modules/" . $this->module . "/Actions/" . $this->module . "Store.php";
         $storeAction = file_get_contents($storeActionFile);
-        $storeAction = str_replace('//use .. ;', "use IDS\\$this->module\\Models\\" . $this->module . ";\nuse IDS\\$this->module\\Requests\\" . $this->module . "StoreRequest;", $storeAction);
+        $storeAction = str_replace('//use .. ;', "use Vheins\\$this->module\\Models\\" . $this->module . ";\nuse Vheins\\$this->module\\Requests\\" . $this->module . "StoreRequest;", $storeAction);
         $storeAction = str_replace('public function handle($handle)', 'public function handle(' . $this->module . 'StoreRequest $request)', $storeAction);
         $storeAction = str_replace('// ..', '$handle = ' . $this->module . '::create($request->validated());', $storeAction);
         file_put_contents($storeActionFile, $storeAction);
@@ -113,7 +113,7 @@ class CreateModule extends Command
         //Create Update Action
         $updateActionFile = base_path() . "/modules/" . $this->module . "/Actions/" . $this->module . "Update.php";
         $updateAction = file_get_contents($updateActionFile);
-        $updateAction = str_replace('//use .. ;', "use IDS\\$this->module\\Models\\" . $this->module . ";\nuse IDS\\$this->module\\Requests\\" . $this->module . "UpdateRequest;",  $updateAction);
+        $updateAction = str_replace('//use .. ;', "use Vheins\\$this->module\\Models\\" . $this->module . ";\nuse Vheins\\$this->module\\Requests\\" . $this->module . "UpdateRequest;",  $updateAction);
         $updateAction = str_replace('public function handle($handle)', 'public function handle(' . $this->module . 'UpdateRequest $request, ' . $this->module . ' $' . Str::camel($this->module) . ')', $updateAction);
         $updateAction = str_replace('// ..', '$' . Str::camel($this->module) . '->update($request->validated());', $updateAction);
         $updateAction = str_replace('return $handle;', 'return $' . Str::camel($this->module) . ';', $updateAction);
@@ -126,7 +126,7 @@ class CreateModule extends Command
         ]);
         $deleteActionFile = base_path() . "/modules/" . $this->module . "/Actions/" . $this->module . "Delete.php";
         $deleteAction = file_get_contents($deleteActionFile);
-        $deleteAction = str_replace('//use .. ;', "use IDS\\$this->module\\Models\\" . $this->module . ";", $deleteAction);
+        $deleteAction = str_replace('//use .. ;', "use Vheins\\$this->module\\Models\\" . $this->module . ";", $deleteAction);
         $deleteAction = str_replace('public function handle($handle)', 'public function handle(' . $this->module . ' $' . Str::camel($this->module) . ')', $deleteAction);
         $deleteAction = str_replace('// ..', '$handle = collect($' . Str::camel($this->module) . '->delete());', $deleteAction);
         file_put_contents($deleteActionFile, $deleteAction);
