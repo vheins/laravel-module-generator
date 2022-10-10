@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'namespace' => 'IDS',
+    'namespace' => 'Vheins',
 
     /*
     |--------------------------------------------------------------------------
@@ -220,10 +220,10 @@ return [
     */
 
     'composer' => [
-        'vendor' => 'ids',
+        'vendor' => 'vheins',
         'author' => [
-            'name' => 'ID Solutions',
-            'email' => 'developer@idsolutions.id',
+            'name' => 'Muhammad Rheza Alfin',
+            'email' => 'aRhez@digitama.co.id',
         ],
         'composer-output' => true,
     ],
@@ -239,7 +239,7 @@ return [
     'cache' => [
         'enabled' => false,
         'driver' => 'redis',
-        'key' => 'ids-modules',
+        'key' => 'modules',
         'lifetime' => 60,
     ],
     /*
