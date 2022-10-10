@@ -77,33 +77,33 @@ export default {
     </div>
     <div v-else class="uk-card uk-card-default">
         <div class="uk-card-header uk-padding-small">
-            <div class="uk-grid-small uk-flex-middle uk-grid" uk-grid="true">
-                <div class="uk-width-expand uk-first-column">
-                    <h3 class="uk-card-title">
-                        {{ data && data.name ? data.name : 'Buat $CLASS$ Baru' }}
+            <div class="uk-grid-small uk-flex-middle" uk-grid>
+                <div class="uk-width-expand">
+                    <h3 class="uk-card-title uk-text-truncate">
+                        {{ data && data.name ? data.name : 'Buat Company Baru' }}
                     </h3>
                 </div>
-                <div v-if="data" uk-grid>
+                <div class="uk-width-auto" v-if="data" uk-grid>
                     <button @click="remove" :disabled="store.loading"
                         v-if="store.isView && can(`${store.permission}-delete`)"
                         class=" uk-button uk-button-small uk-border-rounded uk-button-default">
                         <span class="material-icons uk-text-middle">
                             <TrashIcon />
-                        </span> Hapus
+                        </span><span class="uk-visible@m">Hapus</span>
                     </button>
                     <button @click="store.setEdit" :disabled="store.loading"
                         v-if="store.isView && can(`${store.permission}-edit`)"
                         class="uk-button uk-button-small uk-border-rounded uk-button-primary red">
                         <span class="navigation-side-icon material-icons md-20">
                             <BallpenIcon />
-                        </span> Edit
+                        </span> <span class="uk-visible@m">Edit</span>
                     </button>
                     <button @click="store.rollBack" :disabled="store.loading"
                         v-if="store.isEdit && can(`${store.permission}-edit`)"
                         class="uk-button uk-button-small uk-border-rounded uk-button-secondary">
                         <span class="navigation-side-icon material-icons md-20">
                             <RefreshIcon />
-                        </span> Reset
+                        </span> <span class="uk-visible@m">Reset</span>
                     </button>
                 </div>
             </div>
