@@ -14,7 +14,9 @@
         "Generator"
     ],
     "require": {
-        "lorisleiva/laravel-actions": "^2.4",
+        "lorisleiva/laravel-actions": "^2.4"
+    },
+    "require-dev": {
         "nwidart/laravel-modules": "^9.0"
     },
     "extra": {
