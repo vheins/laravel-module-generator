@@ -61,7 +61,6 @@ export default {
     props: {
         method: String,
         data: Object,
-        permission: String,
     },
     watch: {
         data: function (value) {
@@ -83,44 +82,30 @@ export default {
                         {{ data && data.name ? data.name : 'Buat Company Baru' }}
                     </h3>
                 </div>
-                <div class="uk-width-auto" v-if="data" uk-grid>
-                    <button @click="remove" :disabled="store.loading"
-                        v-if="store.isView && can(`${store.permission}-delete`)"
-                        class=" uk-button uk-button-small uk-border-rounded uk-button-default">
-                        <span class="material-icons uk-text-middle">
-                            <TrashIcon />
-                        </span><span class="uk-visible@m">Hapus</span>
-                    </button>
-                    <button @click="store.setEdit" :disabled="store.loading"
-                        v-if="store.isView && can(`${store.permission}-edit`)"
-                        class="uk-button uk-button-small uk-border-rounded uk-button-primary red">
-                        <span class="navigation-side-icon material-icons md-20">
-                            <BallpenIcon />
-                        </span> <span class="uk-visible@m">Edit</span>
-                    </button>
-                    <button @click="store.rollBack" :disabled="store.loading"
-                        v-if="store.isEdit && can(`${store.permission}-edit`)"
-                        class="uk-button uk-button-small uk-border-rounded uk-button-secondary">
-                        <span class="navigation-side-icon material-icons md-20">
-                            <RefreshIcon />
-                        </span> <span class="uk-visible@m">Reset</span>
-                    </button>
-                </div>
+                <FormButtonTool :data="data" :store="store" />
             </div>
         </div>
-        <form class="uk-form-stacked" @submit.prevent="submit">
+        <div class="uk-form-stacked" autocomplete="off">
             <div class="uk-card-body uk-padding-remove-top uk-margin-top">
 $FORM$
             </div>
             <div v-if="(store.isEdit || store.isCreate) && (can(`${store.permission}-create`) || can(`${store.permission}-edit`))"
                 class="uk-card-footer uk-padding-small">
-                <button type="submit" :disabled="store.loading"
+                <button @click="submit" type="submit" :disabled="store.loading"
                     class=" uk-button uk-button-small uk-border-rounded uk-button-primary red uk-float-right">
                     <span class="material-icons uk-text-middle">
                         <DeviceFloppyIcon />
                     </span> Simpan
                 </button>
+
+                <button @click="remove" :disabled="store.loading"
+                    v-if="store.isEdit && can(`${store.permission}-delete`)"
+                    class="uk-button uk-button-small uk-border-rounded uk-button-warning uk-float-left">
+                    <span class="material-icons uk-text-middle">
+                        <TrashIcon />
+                    </span> Hapus
+                </button>
             </div>
-        </form>
+        </div>
     </div>
 </template>

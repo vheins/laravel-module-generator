@@ -19,11 +19,11 @@ return new class extends Migration
 
 $FIELDS$
             $table->unsignedInteger('created_at');
-            $table->foreignUuid('created_by')->nullable()->constrained('users');
+            $table->foreignUuid('created_by')->nullable()->constrained('users')->onUpdate('cascade');
             $table->unsignedInteger('updated_at');
-            $table->foreignUuid('updated_by')->nullable()->constrained('users');
+            $table->foreignUuid('updated_by')->nullable()->constrained('users')->onUpdate('cascade');
             $table->unsignedInteger('deleted_at')->nullable();
-            $table->foreignUuid('deleted_by')->nullable()->constrained('users');
+            $table->foreignUuid('deleted_by')->nullable()->constrained('users')->onUpdate('cascade');
         });
 
         Artisan::call('create:permission', ['name' => 'module.$PERMISSION$']);
