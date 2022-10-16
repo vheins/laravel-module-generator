@@ -162,6 +162,9 @@ class CreateModule extends Command
                 '--fillable' => $this->fields,
             ]);
         }
+
+        //Clear Cache
+        $this->call('optimize:clear');
     }
 
     private function pageUrl($text)
