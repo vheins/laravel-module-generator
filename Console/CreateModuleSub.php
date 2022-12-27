@@ -57,7 +57,8 @@ class CreateModuleSub extends Command
     public function handle()
     {
         $this->module = Str::studly($this->argument('module'));
-        $this->name =  $this->module . Str::studly($this->argument('name'));
+        //$this->name =  $this->module . Str::studly($this->argument('name'));
+        $this->name =  Str::studly($this->argument('name'));
         $this->fields = $this->option('fillable');
         //dd($this->module, $this->fields);
 
@@ -115,11 +116,11 @@ class CreateModuleSub extends Command
 
         //Generate Create Action
         $this->call('create:module:action', [
-            'name' => $this->name . 'Store',
+            'name' => $this->name . '/Store',
             'module' => $this->module,
         ]);
         //Create Store Action
-        $storeActionFile = base_path() . "/modules/" . $this->module . "/Actions/" . $this->name . "Store.php";
+        $storeActionFile = base_path() . "/modules/" . $this->module . "/Actions/" . $this->name . "/Store.php";
         $storeAction = file_get_contents($storeActionFile);
         $storeAction = str_replace('//use .. ;', "use " . config('modules.namespace') . "\\$this->module\\Models\\" . $this->name . ";\nuse " . config('modules.namespace') . "\\$this->module\\Requests\\" . $this->name . "StoreRequest;", $storeAction);
         $storeAction = str_replace('public function handle($handle)', 'public function handle(' . $this->name . 'StoreRequest $request)', $storeAction);
@@ -128,11 +129,11 @@ class CreateModuleSub extends Command
 
         //Generate Update Action
         $this->call('create:module:action', [
-            'name' => $this->name . 'Update',
+            'name' => $this->name . '/Update',
             'module' => $this->module,
         ]);
         //Create Update Action
-        $updateActionFile = base_path() . "/modules/" . $this->module . "/Actions/" . $this->name . "Update.php";
+        $updateActionFile = base_path() . "/modules/" . $this->module . "/Actions/" . $this->name . "/Update.php";
         $updateAction = file_get_contents($updateActionFile);
         $updateAction = str_replace('//use .. ;', "use " . config('modules.namespace') . "\\$this->module\\Models\\" . $this->name . ";\nuse " . config('modules.namespace') . "\\$this->module\\Requests\\" . $this->name . "UpdateRequest;",  $updateAction);
         $updateAction = str_replace('public function handle($handle)', 'public function handle(' . $this->name . 'UpdateRequest $request, ' . $this->name . ' $' . Str::camel($this->name) . ')', $updateAction);
@@ -142,10 +143,10 @@ class CreateModuleSub extends Command
 
         //Generate Delete Action
         $this->call('create:module:action', [
-            'name' => $this->name . 'Delete',
+            'name' => $this->name . '/Delete',
             'module' => $this->module,
         ]);
-        $deleteActionFile = base_path() . "/modules/" . $this->module . "/Actions/" . $this->name . "Delete.php";
+        $deleteActionFile = base_path() . "/modules/" . $this->module . "/Actions/" . $this->name . "/Delete.php";
         $deleteAction = file_get_contents($deleteActionFile);
         $deleteAction = str_replace('//use .. ;', "use Vheins\\$this->module\\Models\\" . $this->name . ";", $deleteAction);
         $deleteAction = str_replace('public function handle($handle)', 'public function handle(' . $this->name . ' $' . Str::camel($this->name) . ')', $deleteAction);
@@ -207,7 +208,7 @@ class CreateModuleSub extends Command
         ];
         foreach ($commands as $command) {
             $this->call($command, [
-                'name' => $this->name,
+                'name' =>  $this->module . $this->name,
                 'module' => $this->module,
                 '--fillable' => $this->fields,
             ]);
