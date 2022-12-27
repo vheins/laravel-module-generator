@@ -135,7 +135,7 @@ class CreateModuleSub extends Command
         //Create Update Action
         $updateActionFile = base_path() . "/modules/" . $this->module . "/Actions/" . $this->name . "/Update.php";
         $updateAction = file_get_contents($updateActionFile);
-        $updateAction = str_replace('//use .. ;', "use " . config('modules.namespace') . "\\$this->module\\Models\\" . $this->name . ";\nuse " . config('modules.namespace') . "\\$this->module\\Requests\\" . $this->name . "UpdateRequest;",  $updateAction);
+        $updateAction = str_replace('//use .. ;', "use " . config('modules.namespace') . "\\" . $this->module . "\\Models\\" . $this->name . ";\nuse " . config('modules.namespace') . "\\$this->module\\Requests\\" . $this->name . "UpdateRequest;",  $updateAction);
         $updateAction = str_replace('public function handle($handle)', 'public function handle(' . $this->name . 'UpdateRequest $request, ' . $this->name . ' $' . Str::camel($this->name) . ')', $updateAction);
         $updateAction = str_replace('// ..', '$' . Str::camel($this->name) . '->update($request->validated());', $updateAction);
         $updateAction = str_replace('return $handle;', 'return $' . Str::camel($this->name) . ';', $updateAction);
@@ -148,7 +148,7 @@ class CreateModuleSub extends Command
         ]);
         $deleteActionFile = base_path() . "/modules/" . $this->module . "/Actions/" . $this->name . "/Delete.php";
         $deleteAction = file_get_contents($deleteActionFile);
-        $deleteAction = str_replace('//use .. ;', "use Vheins\\$this->module\\Models\\" . $this->name . ";", $deleteAction);
+        $deleteAction = str_replace('//use .. ;', "use " . config('modules.namespace') . "\\" . $this->module\\Models . "\\" . $this->name . ";", $deleteAction);
         $deleteAction = str_replace('public function handle($handle)', 'public function handle(' . $this->name . ' $' . Str::camel($this->name) . ')', $deleteAction);
         $deleteAction = str_replace('// ..', '$handle = collect($' . Str::camel($this->name) . '->delete());', $deleteAction);
         file_put_contents($deleteActionFile, $deleteAction);
@@ -157,7 +157,7 @@ class CreateModuleSub extends Command
         //Add New API Route
         $routeApiFile = base_path() . "/modules/" . $this->module . "/api.php";
         $routeApi = file_get_contents($routeApiFile);
-        $routeApi = str_replace('//add more class here ...', "use Vheins\\" . $this->module . "\\Controllers\\" . $this->name . "Controller;\n//add more class here ...", $routeApi);
+        $routeApi = str_replace('//add more class here ...', "use" . config('modules.namespace') . "\\" . $this->module . "\\Controllers\\" . $this->name . "Controller;\n//add more class here ...", $routeApi);
         $routeApi = str_replace('//add more route here ...', "Route::apiResource('/" . $this->pageUrl() . "', " . $this->name . "Controller::class);\n\t//add more route here ...", $routeApi);
         file_put_contents($routeApiFile, $routeApi);
 
