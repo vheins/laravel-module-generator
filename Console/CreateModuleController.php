@@ -68,7 +68,7 @@ class CreateModuleController extends GeneratorCommand
             'STUDLY_NAME'       => $module->getStudlyName(),
             'MODULE_NAMESPACE'  => $this->laravel['modules']->config('namespace'),
             'MODEL_VAR'         => ($this->getModuleName() == $this->getController()) ? Str::of($this->getController())->camel() : Str::of($this->getController())->replace($this->getModuleName(), '')->camel(),
-            'PERMISSION'        => Str::of($this->getController())->snake()->replace('_', '.'),
+            'PERMISSION'        => ($this->getModuleName() == $this->getController()) ? Str::of($this->getController())->snake()->replace('_', '.') : Str::of($this->getModuleName() . "_" . $this->getController())->snake()->replace('_', '.'),
         ]))->render();
     }
 
