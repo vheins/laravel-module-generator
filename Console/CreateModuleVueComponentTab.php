@@ -107,7 +107,7 @@ final class CreateModuleVueComponentTab extends GeneratorCommand
 
         $Path = GenerateConfigReader::read('vue-components');
 
-        return $path . $Path->getPath() . '/' . Str::of($this->getModelName())->snake()->replace('_','-') . '-icon-tab.vue';
+        return $path . $Path->getPath() . '/' . Str::of($this->getModuleName())->snake()->replace('_','-') . '-icon-tab.vue';
     }
 
     /**
