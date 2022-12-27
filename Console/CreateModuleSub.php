@@ -162,7 +162,7 @@ class CreateModuleSub extends Command
         file_put_contents($routeApiFile, $routeApi);
 
         //Add Dashboard Link
-        $dashboardLinkFile = base_path() . "/modules/" . $this->module . "/Vue/components/" . $this->module . "DashboardLink.vue";
+        $dashboardLinkFile = base_path() . "/modules/" . $this->module . "/Vue/components/" . Str::of($this->module)->snake()->replace('_','-') . "-dashboard-link.vue";
         $dashboardLink = file_get_contents($dashboardLinkFile);
         $dashboardLink = str_replace('//add link here ...', "
                         {
@@ -176,7 +176,7 @@ class CreateModuleSub extends Command
         file_put_contents($dashboardLinkFile, $dashboardLink);
 
         //Add Icon Tabs
-        $iconTabFile = base_path() . "/modules/" . $this->module . "/Vue/components/" . $this->module . "IconTab.vue";
+        $iconTabFile = base_path() . "/modules/" . $this->module . "/Vue/components/" . Str::of($this->module)->snake()->replace('_','-') . "-icon-tab.vue";
         $iconTab = file_get_contents($iconTabFile);
         $iconTab = str_replace('//add tabs here ...', "
                 {
