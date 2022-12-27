@@ -169,7 +169,7 @@ class CreateModuleSub extends Command
                             title: '" . Str::headline($this->name) . "',
                             link: '/dashboard/" . $this->pageUrl() . "',
                             icon: 'AppsIcon',
-                            permission: 'module." . Str::of($this->name)->snake()->replace('_', '.') . "',
+                            permission: 'module." . Str::of($this->module.$this->name)->snake()->replace('_', '.') . "',
                         },
                         //add link here ...
         ", $dashboardLink);
@@ -183,7 +183,7 @@ class CreateModuleSub extends Command
                     title: '" . Str::headline($this->name) . "',
                     link: '/dashboard/" . $this->pageUrl() . "',
                     icon: 'AppsIcon',
-                    permission: 'module." . Str::of($this->name)->snake()->replace('_', '.') . "',
+                    permission: 'module." . Str::of($this->module.$this->name)->snake()->replace('_', '.') . "',
                 },
                 //add tabs here ...
         ", $iconTab);
