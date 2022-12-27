@@ -157,7 +157,7 @@ class CreateModuleSub extends Command
         //Add New API Route
         $routeApiFile = base_path() . "/modules/" . $this->module . "/api.php";
         $routeApi = file_get_contents($routeApiFile);
-        $routeApi = str_replace('//add more class here ...', "use" . config('modules.namespace') . "\\" . $this->module . "\\Controllers\\" . $this->name . "Controller;\n//add more class here ...", $routeApi);
+        $routeApi = str_replace('//add more class here ...', "use " . config('modules.namespace') . "\\" . $this->module . "\\Controllers\\" . $this->name . "Controller;\n//add more class here ...", $routeApi);
         $routeApi = str_replace('//add more route here ...', "Route::apiResource('/" . $this->pageUrl() . "', " . $this->name . "Controller::class);\n\t//add more route here ...", $routeApi);
         file_put_contents($routeApiFile, $routeApi);
 
