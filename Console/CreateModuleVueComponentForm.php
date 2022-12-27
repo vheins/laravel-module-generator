@@ -125,7 +125,7 @@ final class CreateModuleVueComponentForm extends GeneratorCommand
 
         $Path = GenerateConfigReader::read('vue-components');
 
-        return $path . $Path->getPath() . '/' . Str::of($this->getFileName())->snake()->replace('_','-') . 'form.vue';
+        return $path . $Path->getPath() . '/' . Str::of($this->getFileName())->snake()->replace('_','-') . '-form.vue';
     }
 
     /**
