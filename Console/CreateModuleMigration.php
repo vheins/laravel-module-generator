@@ -78,7 +78,7 @@ class CreateModuleMigration extends GeneratorCommand
 
         if ($parser->isCreate()) {
             return Stub::create('/migration/create.stub', [
-                'permission' => ($this->argument('basename') == $this->argument('module')) ? Str::of($parser->getTableName())->singular()->replace('_', '') : Str::of($this->argument('basename'))->snake()->replace('_', '.'),
+                'permission' => ($this->argument('basename') == $this->argument('module')) ? Str::of($parser->getTableName())->singular()->replace('_', '') : Str::of($this->argument('module').$this->argument('basename'))->snake()->replace('_', '.'),
                 'class' => $this->getClass(),
                 'table' => $parser->getTableName(),
                 'fields' => $this->getSchemaParser()->render(),
