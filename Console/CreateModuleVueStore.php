@@ -110,7 +110,7 @@ final class CreateModuleVueStore extends GeneratorCommand
 
         $Path = GenerateConfigReader::read('vue-stores');
 
-        return $path . $Path->getPath() . '/' . $this->getFileName() . '.js';
+        return $path . $Path->getPath() . '/' . Str::of($this->getFileName())->snake()->replace('_','-') . '.js';
     }
 
     /**
