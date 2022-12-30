@@ -181,7 +181,7 @@ class CreateModuleModel extends GeneratorCommand
             'MODULE'            => $this->getModuleName(),
             'STUDLY_NAME'       => $module->getStudlyName(),
             'MODULE_NAMESPACE'  => $this->laravel['modules']->config('namespace'),
-            'TABLE_NAME'        => Str::of($this->getModuleName().$this->getModelName())->snake()->plural();
+            'TABLE_NAME'        => Str::of($this->getModuleName().$this->getModelName())->snake()->plural()
         ]))->render();
     }
 
