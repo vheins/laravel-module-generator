@@ -58,20 +58,23 @@ class CreateModule extends Command
     {
         $blueprints = Yaml::parse(file_get_contents($this->option('blueprint')));
         foreach ($blueprints as $module => $subModules) {
-            dd($module,$subModules);
-            foreach ($subModules['Fillable'] as $k => $v) {
-                dd($k,$v);
-                //$fillables[] = 
+            foreach ($subModules as $subModules => $tables) {
+                //Fillable
+                $fillables = [];
+                foreach ($tables['Fillable'] as $k => $v) {
+                    $fillables[] = $k.":".$v;
+                }
+
+                Artisan::call('create:module:sub', [
+                    'module' => $module,
+                    'name' => $subModule,
+                    '--fillable' => implode(",",$fillables)
+                ]);
             }
 
-            // Artisan::call('create:module:sub', [
-            //     'module' => $module,
-            //     'name' => $subModule,
-            //     '--fillable' => 
-            // ]);
         }
 
-        dd($blueprints);
+        //dd($blueprints);
 
 
         // $this->module = Str::studly($this->argument('module'));
