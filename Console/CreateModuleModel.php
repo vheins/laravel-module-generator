@@ -106,9 +106,9 @@ class CreateModuleModel extends GeneratorCommand
     private function handleOptionalMigrationOption()
     {
         if ($this->option('migration') === true) {
-            $migrationName = 'create_' . $this->createMigrationName() . '_table';
+            $migrationName = 'create_' . strtolower($this->argument('module')) . '_' . $this->createMigrationName() . '_table';
             $this->call('create:module:migration', [
-                'name' => $this->argument('module').$migrationName,
+                'name' => $migrationName,
                 'module' => $this->argument('module'),
                 'basename' => $this->argument('module').$this->argument('model'),
                 '--fields' => $this->option('fillable')
