@@ -15,7 +15,7 @@ class CreateModule extends Command
      *
      * @var string
      */
-    protected $signature = 'create:module {module} {--blueprint=}';
+    protected $signature = 'create:module {--blueprint=}';
 
     /**
      * The console command description.
@@ -24,17 +24,17 @@ class CreateModule extends Command
      */
     protected $description = 'Create Module Scaffold';
 
-    /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
-    protected function getArguments()
-    {
-        return [
-            ['module', InputArgument::REQUIRED, 'The name of module will be created.'],
-        ];
-    }
+    // /**
+    //  * Get the console command arguments.
+    //  *
+    //  * @return array
+    //  */
+    // protected function getArguments()
+    // {
+    //     return [
+    //         ['module', InputArgument::REQUIRED, 'The name of module will be created.'],
+    //     ];
+    // }
 
     /**
      * Get the console command options.
@@ -55,7 +55,7 @@ class CreateModule extends Command
      */
     public function handle()
     {
-        $blueprints = Yaml::parse(file_get_contents('filepath'));
+        $blueprints = Yaml::parse(file_get_contents($this->option('blueprint')));
         dd($blueprints);
 
 
