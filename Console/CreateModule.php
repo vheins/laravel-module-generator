@@ -63,7 +63,7 @@ class CreateModule extends Command
                 foreach ($tables['Fillable'] as $k => $v) {
                     $fillables[] = $k.":".$v;
                 }
-
+                sleep(1);
                 $this->call('create:module:sub', [
                     'module' => $module,
                     'name' => $subModule,
