@@ -2,7 +2,7 @@
 
 namespace Vheins\LaravelModuleGenerator\Console;
 
-use Yaml;
+use Symfony\Component\Yaml\Yaml;
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
