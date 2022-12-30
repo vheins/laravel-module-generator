@@ -58,7 +58,7 @@ class CreateModule extends Command
     {
         $blueprints = Yaml::parse(file_get_contents($this->option('blueprint')));
         foreach ($blueprints as $module => $subModules) {
-            foreach ($subModules as $subModules => $tables) {
+            foreach ($subModules as $subModule => $tables) {
                 //Fillable
                 $fillables = [];
                 foreach ($tables['Fillable'] as $k => $v) {
