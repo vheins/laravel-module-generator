@@ -108,9 +108,9 @@ class CreateModuleModel extends GeneratorCommand
         if ($this->option('migration') === true) {
             $migrationName = 'create_' . $this->createMigrationName() . '_table';
             $this->call('create:module:migration', [
-                'name' => $migrationName,
+                'name' => $this->argument('module').$migrationName,
                 'module' => $this->argument('module'),
-                'basename' => $this->argument('model'),
+                'basename' => $this->argument('module').$this->argument('model'),
                 '--fields' => $this->option('fillable')
             ]);
         }
@@ -181,6 +181,7 @@ class CreateModuleModel extends GeneratorCommand
             'MODULE'            => $this->getModuleName(),
             'STUDLY_NAME'       => $module->getStudlyName(),
             'MODULE_NAMESPACE'  => $this->laravel['modules']->config('namespace'),
+            'TABLE_NAME'        => Str::of($this->getModuleName().$this->getModelName())->snake()->plural();
         ]))->render();
     }
 
