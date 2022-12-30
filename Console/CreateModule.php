@@ -2,9 +2,10 @@
 
 namespace Vheins\LaravelModuleGenerator\Console;
 
-use Symfony\Component\Yaml\Yaml;
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
+use Symfony\Component\Yaml\Yaml;
+use Illuminate\Support\Facades\Artisan;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
@@ -56,6 +57,19 @@ class CreateModule extends Command
     public function handle()
     {
         $blueprints = Yaml::parse(file_get_contents($this->option('blueprint')));
+        foreach ($blueprints as $module => $subModules) {
+            foreach ($subModules['fillable'] as $k => $v) {
+                dd($k,$v);
+                //$fillables[] = 
+            }
+
+            // Artisan::call('create:module:sub', [
+            //     'module' => $module,
+            //     'name' => $subModule,
+            //     '--fillable' => 
+            // ]);
+        }
+
         dd($blueprints);
 
 
