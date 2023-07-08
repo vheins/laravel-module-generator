@@ -2,11 +2,14 @@
 
 namespace $NAMESPACE$;
 
+//Class Refferences
 use App\Models\Model;
 
 class $CLASS$ extends Model
 {
 
+    protected $table = '$TABLE_NAME$';
     protected $fillable = $FILLABLE$;
 
+    //Model Relationship
 }

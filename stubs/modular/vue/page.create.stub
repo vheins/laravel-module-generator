@@ -1,6 +1,7 @@
 <script>
 export default {
     setup() {
+        const { t } = useI18n();
         const layout = useLayoutStore();
         layout.setLayout('dashboard');
         const auth = useAuthStore();
@@ -9,7 +10,7 @@ export default {
         const store = useModule$CLASS$Store();
         store.setCreate();
 
-        return { auth, can, store };
+        return { auth, can, store, t };
     }
 }
 </script>
@@ -20,7 +21,7 @@ export default {
             <div class="uk-grid-small uk-flex-middle" uk-grid>
                 <div class="uk-width-expand uk-first-column">
                     <strong class="text-color-primary">
-                        {{ store.moduleName }} <span class="uk-visible@m">Management</span>
+                        {{ $t(store.moduleName) }}
                     </strong>
                     <DashboardsBreadcrumb showDisabled="true" />
                 </div>
@@ -28,7 +29,7 @@ export default {
                     <div class="uk-button-group rounded">
                         <RouterLink as="button" :to="`${store.route}`" uk-tooltip="title: Back; pos: left" type="button"
                             class="uk-button uk-button-small uk-border-rounded">
-                            <ArrowLeftIcon /> <span class="uk-visible@m">Kembali</span>
+                            <ArrowLeftIcon /> <span class="uk-visible@m">{{$t('Back')}}</span>
                         </RouterLink>
                     </div>
                 </div>
@@ -38,7 +39,7 @@ export default {
 
         <div class="container-xl uk-padding-small">
             <$MODULE$IconTab />
-            <$CLASS$Form :data="store.data" method="POST"/>
+            <$CLASS$Form method="POST"/>
         </div>
     </div>
 </template>
