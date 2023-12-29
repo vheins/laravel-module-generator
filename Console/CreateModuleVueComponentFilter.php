@@ -10,7 +10,7 @@ use Nwidart\Modules\Traits\ModuleCommandTrait;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-final class CreateModuleVueComponentForm extends GeneratorCommand
+final class CreateModuleVueComponentFilter extends GeneratorCommand
 {
     use ModuleCommandTrait;
 
@@ -19,7 +19,7 @@ final class CreateModuleVueComponentForm extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'create:module:vue:component:form';
+    protected $name = 'create:module:vue:component:filter';
 
     protected $argumentName = 'name';
 
@@ -66,7 +66,7 @@ final class CreateModuleVueComponentForm extends GeneratorCommand
         $unique = implode('_', $unique);
         $class = Str::of($unique)->title()->replace('_', '');
 
-        return (new Stub('/vue/component.form.stub', [
+        return (new Stub('/vue/component.filter.stub', [
             'STUDLY_NAME' => $module->getStudlyName(),
             'API_ROUTE' => $this->pageUrl($module->getStudlyName()),
             'CLASS' => $class,
@@ -142,7 +142,7 @@ final class CreateModuleVueComponentForm extends GeneratorCommand
         $unique = implode('-', $unique);
         $fileName = Str::of($unique);
 
-        return $path.$Path->getPath().'/'.$fileName.'-form.vue';
+        return $path.$Path->getPath().'/'.$fileName.'-filter.vue';
     }
 
     /**
@@ -169,9 +169,15 @@ final class CreateModuleVueComponentForm extends GeneratorCommand
     private function getFormInput()
     {
         $fillable = $this->option('fillable');
+        $form = [];
         foreach (explode(',', $fillable) as $var) {
-            $keys = explode(':', $var);
-            $form[] = $this->getInputTemplateContents($keys[0], $keys[1]);
+            $key = explode(':', $var)[1];
+            $val = explode(':', $var)[0];
+            if (in_array($key, [
+                'foreignId', 'foreignUuid', 'foreignUlid',
+            ])) {
+                $form[] = $this->getInputTemplateContents($val, $key);
+            }
         }
 
         return implode("\n", $form);
@@ -213,11 +219,14 @@ final class CreateModuleVueComponentForm extends GeneratorCommand
                 break;
         }
 
-        return (new Stub($pathStub, [
+        return Str::of((new Stub($pathStub, [
             'TITLE' => Str::replace('_', ' ', Str::title($name)),
             'VAR_NAME' => Str::camel($name),
             'MODULE' => Str::of($this->getModuleName())->snake()->slug()->plural(),
             'ENDPOINT' => Str::of($name)->snake()->slug()->plural(),
-        ]))->render();
+        ]))->render())
+            ->replace('store.form', 'store.filter')
+            ->replace(':disabled="store.isView"', 'multiple')
+            ->replace('class="uk-margin"', 'class="uk-width-1-1"');
     }
 }

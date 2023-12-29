@@ -3,12 +3,12 @@
 namespace Vheins\LaravelModuleGenerator\Console;
 
 use Illuminate\Support\Str;
-use Nwidart\Modules\Support\Stub;
 use Nwidart\Modules\Commands\GeneratorCommand;
-use Nwidart\Modules\Traits\ModuleCommandTrait;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
 use Nwidart\Modules\Support\Config\GenerateConfigReader;
+use Nwidart\Modules\Support\Stub;
+use Nwidart\Modules\Traits\ModuleCommandTrait;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 class CreateModuleRequest extends GeneratorCommand
 {
@@ -67,7 +67,6 @@ class CreateModuleRequest extends GeneratorCommand
         ];
     }
 
-
     /**
      * @return mixed
      */
@@ -76,9 +75,12 @@ class CreateModuleRequest extends GeneratorCommand
         $module = $this->laravel['modules']->findOrFail($this->getModuleName());
 
         return (new Stub('/request.stub', [
-            'FILLABLE'  => $this->getFillable(),
+            'FILLABLE' => $this->getFillable(),
             'NAMESPACE' => $this->getClassNamespace($module),
-            'CLASS'     => $this->getClass(),
+            'CLASS' => $this->getClass(),
+            'MODULE' => $this->getModuleName(),
+            'MODULE_NAMESPACE' => $this->laravel['modules']->config('namespace'),
+            'MODEL' => $this->getModuleName(),
         ]))->render();
     }
 
@@ -89,15 +91,18 @@ class CreateModuleRequest extends GeneratorCommand
     {
         $tabs = "\n\t\t\t";
         $fillable = $this->option('fillable');
-        if (!is_null($fillable)) {
+        if (! is_null($fillable)) {
             foreach (explode(',', $fillable) as $var) {
                 $textVar = explode(':', $var)[0];
                 $isForeign = Str::of($textVar)->contains('_id');
-                if ($isForeign) $arrays[] = "'" . Str::of($textVar)->replace('_id', '') . "' => 'required|array'";
-                $array = "'" . Str::of($textVar)->replace('_id', '.id') . "' => 'required'";
+                if ($isForeign) {
+                    $arrays[] = "'".Str::of($textVar)->replace('_id', '')."' => 'required|array'";
+                }
+                $array = "'".Str::of($textVar)->replace('_id', '.id')."' => 'required'";
                 $arrays[] = $array;
-            };
-            return "[" . $tabs . implode("," . $tabs, $arrays) . "\n\t\t]";
+            }
+
+            return '['.$tabs.implode(','.$tabs, $arrays)."\n\t\t]";
         }
 
         return '[]';
@@ -112,7 +117,7 @@ class CreateModuleRequest extends GeneratorCommand
 
         $requestPath = GenerateConfigReader::read('request');
 
-        return $path . $requestPath->getPath() . '/' . $this->getFileName() . '.php';
+        return $path.$requestPath->getPath().'/'.$this->getFileName().'.php';
     }
 
     /**

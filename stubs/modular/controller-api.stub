@@ -9,8 +9,7 @@ use $MODULE_NAMESPACE$\$MODULE$\Models\$NAME$;
 use $MODULE_NAMESPACE$\$MODULE$\Actions\$NAME$\Store;
 use $MODULE_NAMESPACE$\$MODULE$\Actions\$NAME$\Update;
 use $MODULE_NAMESPACE$\$MODULE$\Actions\$NAME$\Delete;
-use $MODULE_NAMESPACE$\$MODULE$\Requests\$NAME$StoreRequest;
-use $MODULE_NAMESPACE$\$MODULE$\Requests\$NAME$UpdateRequest;
+use $MODULE_NAMESPACE$\$MODULE$\Requests\$NAME$Request;
 
 
 class $CLASS$ extends Controller
@@ -18,6 +17,9 @@ class $CLASS$ extends Controller
     protected $is_public = false;
     protected $need_permission = true;
     public $permission = 'module.$PERMISSION$';
+    public $mapRequest = []; //Array of Request
+    public $mapRelation = []; //Array of Relation, Key as Eloquent Relation, Value as Request
+    public $mapTimeframe = []; //Array of Request Aliased as Timeframe
 
     public function index(Request $request)
     {
@@ -26,7 +28,14 @@ class $CLASS$ extends Controller
         return $this->success($data);
     }
 
-    public function store($NAME$StoreRequest $request)
+    public function export(Request $request)
+    {
+        $model = $NAME$::query();
+        $data = $this->search($model, $request);
+        return $this->success($data);
+    }
+
+    public function store($NAME$Request $request)
     {
         $store = Store::run($request);
         return $this->show($store, 201, '$NAME$ created');
@@ -34,11 +43,11 @@ class $CLASS$ extends Controller
 
     public function show($NAME$ $$MODEL_VAR$, $code = 200, $message = null)
     {
-        //$$MODEL_VAR$->load();
+        //$$MODEL_VAR$->loadMissing();
         return $this->success($$MODEL_VAR$, $message, $code);
     }
 
-    public function update($NAME$UpdateRequest $request, $NAME$ $$MODEL_VAR$)
+    public function update($NAME$Request $request, $NAME$ $$MODEL_VAR$)
     {
         $update = Update::run($request,$$MODEL_VAR$);
         return $this->show($update, 200, '$NAME$ updated');

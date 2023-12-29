@@ -3,12 +3,12 @@
 namespace Vheins\LaravelModuleGenerator\Console;
 
 use Illuminate\Support\Str;
-use Nwidart\Modules\Support\Stub;
 use Nwidart\Modules\Commands\GeneratorCommand;
-use Nwidart\Modules\Traits\ModuleCommandTrait;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
 use Nwidart\Modules\Support\Config\GenerateConfigReader;
+use Nwidart\Modules\Support\Stub;
+use Nwidart\Modules\Traits\ModuleCommandTrait;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 final class CreateModuleVueStore extends GeneratorCommand
 {
@@ -42,7 +42,6 @@ final class CreateModuleVueStore extends GeneratorCommand
         ];
     }
 
-
     public function getDefaultNamespace(): string
     {
         $module = $this->laravel['modules'];
@@ -69,14 +68,16 @@ final class CreateModuleVueStore extends GeneratorCommand
         $class = Str::of($unique)->title()->replace('_', '');
 
         return (new Stub('/vue/store.pinia.stub', [
-            'STUDLY_NAME'       => $module->getStudlyName(),
-            'API_ROUTE'         => $this->pageUrl(),
-            'CLASS'             => $class,
-            'LOWER_NAME'        => $module->getLowerName(),
-            'MODULE'            => $this->getModuleName(),
-            'FILLABLE'          => $this->getFillable(),
-            'NAME'              => Str::of(Str::studly($this->argument('name')))->headline(),
-            'PERMISSION'        => $permission
+            'STUDLY_NAME' => $module->getStudlyName(),
+            'API_ROUTE' => $this->pageUrl(),
+            'CLASS' => $class,
+            'LOWER_NAME' => $module->getLowerName(),
+            'MODULE' => $this->getModuleName(),
+            'FILLABLE' => $this->getFillable(),
+            'FILTER' => $this->getFilter(),
+            'HEADER' => $this->getHeader(),
+            'NAME' => Str::of(Str::studly($this->argument('name')))->headline(),
+            'PERMISSION' => $permission,
         ]))->render();
     }
 
@@ -85,9 +86,39 @@ final class CreateModuleVueStore extends GeneratorCommand
         if ($this->argument('name') == $this->argument('module')) {
             return Str::of($this->argument('module'))->headline()->plural()->slug();
         } else {
-            return Str::of($this->argument('module'))->headline()->plural()->slug() . '/' .
-                Str::of($this->argument('name'))->remove($this->argument('module'), false)->headline()->plural()->slug();
+            $module = Str::of($this->argument('module'))->headline()->plural()->slug()->toString();
+            $name = Str::of($this->argument('name'))->remove($this->argument('module'), false)->headline()->plural()->slug()->toString();
+            if (! empty($module)) {
+                $route[] = $module;
+            }
+            if (! empty($name)) {
+                $route[] = $name;
+            }
+
+            return implode('/', $route);
         }
+    }
+
+    private function getHeader()
+    {
+        $fillable = $this->option('fillable');
+        if (! is_null($fillable)) {
+
+            foreach (explode(',', $fillable) as $var) {
+                $key = explode(':', $var)[1];
+                $val = explode(':', $var)[0];
+                if (in_array($key, [
+                    'foreignId', 'foreignUuid', 'foreignUlid',
+                ])) {
+                    $val = Str::of($val)->replace('_id', '')->toString().'.name';
+                }
+                $arrays[] = "{ '".Str::camel($val)."': '".Str::of($val)->replace('.', '_')->headline()."' }";
+            }
+
+            return "[\n\t\t\t".implode(", \n\t\t\t", $arrays)."\n\t\t]";
+        }
+
+        return '[]';
     }
 
     /**
@@ -96,12 +127,38 @@ final class CreateModuleVueStore extends GeneratorCommand
     private function getFillable()
     {
         $fillable = $this->option('fillable');
-        if (!is_null($fillable)) {
+        if (! is_null($fillable)) {
 
             foreach (explode(',', $fillable) as $var) {
-                $arrays[] = Str::camel(explode(':', $var)[0]) . ": null";
-            };
-            return "{\n\t" . implode(",\n\t", $arrays) . "\n}";
+                $key = explode(':', $var)[0];
+                $arrays[] = Str::of($key)->replace('_id', '')->camel().': null';
+            }
+
+            return "{\n\t".implode(",\n\t", $arrays)."\n}";
+        }
+
+        return '{}';
+    }
+
+    /**
+     * @return string
+     */
+    private function getFilter()
+    {
+        $fillable = $this->option('fillable');
+        if (! is_null($fillable)) {
+            $arrays = [];
+            foreach (explode(',', $fillable) as $var) {
+                $key = explode(':', $var)[1];
+                $val = explode(':', $var)[0];
+                if (in_array($key, [
+                    'foreignId', 'foreignUuid', 'foreignUlid',
+                ])) {
+                    $arrays[] = Str::of($val)->replace('_id', '')->camel().': null';
+                }
+            }
+
+            return "{\n\t\t\t".implode(",\n\t\t\t", $arrays)."\n\t\t}";
         }
 
         return '{}';
@@ -127,7 +184,7 @@ final class CreateModuleVueStore extends GeneratorCommand
         $unique = implode('-', $unique);
         $fileName = Str::of($unique);
 
-        return $path . $Path->getPath() . '/' . $fileName . '.js';
+        return $path.$Path->getPath().'/'.$fileName.'.js';
     }
 
     /**
