@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Console;
 
+use FilesystemIterator;
 use Illuminate\Support\Facades\Artisan;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use Symfony\Component\Console\Exception\RuntimeException;
 
 /**
@@ -78,7 +81,18 @@ final class CreateModuleActionTest extends CommandTestCase
             'module' => $this->moduleName,
         ])->assertExitCode(0);
 
-        $glob = glob($this->getModulePath($this->moduleName).'/**/*.php') ?: [];
+        // PHP glob() does not recurse on '**'; use a recursive directory iterator
+        // to collect every .php file generated under the module directory.
+        $base = $this->getModulePath($this->moduleName);
+        $glob = [];
+        $rii = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($base, FilesystemIterator::SKIP_DOTS)
+        );
+        foreach ($rii as $file) {
+            if ($file->isFile() && $file->getExtension() === 'php') {
+                $glob[] = $file->getPathname();
+            }
+        }
         $this->assertNotEmpty($glob, 'Expected at least one Action file under Actions/');
     }
 }

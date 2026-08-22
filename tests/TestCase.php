@@ -33,8 +33,11 @@ abstract class TestCase extends BaseTestCase
         $this->app['config']->set('modules.paths.modules', $basePath);
         $this->app['config']->set('modules.namespace', 'Vheins');
         $this->app['config']->set('modules.stubs.enabled', true);
-        $this->app['config']->set('modules.stubs.path', base_path('stubs/modular'));
-        Stub::setBasePath(base_path('stubs/modular'));
+        // base_path() inside Orchestra Testbench resolves to the skeleton, not the
+        // repo root, so resolve the repo's stubs/modular directory via __DIR__.
+        $stubsPath = __DIR__.'/../stubs/modular';
+        $this->app['config']->set('modules.stubs.path', $stubsPath);
+        Stub::setBasePath($stubsPath);
 
         // The package's custom generator paths are nested config values. Laravel's
         // mergeConfigFrom does not replace an already-loaded vendor array, so load

@@ -28,12 +28,9 @@ final class CreateModuleTest extends CommandTestCase
 
     public function test_missing_blueprint_fails(): void
     {
-        try {
-            $this->artisan('create:module')->assertFailed();
-            $this->fail('Expected missing-option RuntimeException.');
-        } catch (RuntimeException) {
-            $this->assertTrue(true);
-        }
+        // create:module does not throw a missing-option RuntimeException; its
+        // handle() returns Command::FAILURE, so assert the failed exit code directly.
+        $this->artisan('create:module')->assertFailed();
     }
 
     public function test_invalid_blueprint_path_fails_gracefully(): void

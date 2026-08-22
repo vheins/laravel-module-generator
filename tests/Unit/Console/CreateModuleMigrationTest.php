@@ -82,7 +82,7 @@ final class CreateModuleMigrationTest extends CommandTestCase
         $this->artisan('create:module:migration', [
             'basename' => $basename,
             'module' => $this->moduleName,
-            '--fields=title:string,body:text',
+            '--fields' => 'title:string,body:text',
         ])->assertExitCode(0);
 
         $migrationRel = $this->getGeneratorPath('migration');
