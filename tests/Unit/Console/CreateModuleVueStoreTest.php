@@ -64,7 +64,6 @@ final class CreateModuleVueStoreTest extends CommandTestCase
             'name' => $name,
             'module' => $this->moduleName,
         ])->assertExitCode(0);
-
         $storeRel = $this->getGeneratorPath('vue-stores');
         $this->assertModuleFileExists($storeRel.'/'.strtolower($name).'.js', $this->moduleName);
     }

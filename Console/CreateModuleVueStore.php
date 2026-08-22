@@ -184,7 +184,7 @@ final class CreateModuleVueStore extends GeneratorCommand
         $unique = implode('-', $unique);
         $fileName = Str::of($unique);
 
-        return $path.$Path->getPath().'/'.$fileName.'.js';
+        return $path.$Path->getPath().'/'.Str::lower($fileName).'.js';
     }
 
     /**
@@ -192,7 +192,7 @@ final class CreateModuleVueStore extends GeneratorCommand
      */
     private function getFileName()
     {
-        return Str::camel($this->argument('name'));
+        return Str::lower($this->argument('name'));
     }
 
     /**

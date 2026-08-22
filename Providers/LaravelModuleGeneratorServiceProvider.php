@@ -4,6 +4,7 @@ namespace Vheins\LaravelModuleGenerator\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Lorisleiva\Actions\Facades\Actions;
+use Nwidart\Modules\Support\Stub;
 use Vheins\LaravelModuleGenerator\Action\CreatePostmanCollection;
 use Vheins\LaravelModuleGenerator\Console\CreateApiCrud;
 use Vheins\LaravelModuleGenerator\Console\CreateModule;
@@ -76,6 +77,9 @@ class LaravelModuleGeneratorServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerConfig();
+        $this->app->booted(static function (): void {
+            Stub::setBasePath(base_path('stubs/modular'));
+        });
         $this->configureCommands();
     }
 

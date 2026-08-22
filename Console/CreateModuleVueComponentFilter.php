@@ -140,9 +140,8 @@ final class CreateModuleVueComponentFilter extends GeneratorCommand
         }
         $unique = array_unique($splitNames);
         $unique = implode('-', $unique);
-        $fileName = Str::of($unique);
 
-        return $path.$Path->getPath().'/'.$fileName.'-filter.vue';
+        return $path.$Path->getPath().'/'.strtolower($this->argument('name')).'-filter.vue';
     }
 
     /**

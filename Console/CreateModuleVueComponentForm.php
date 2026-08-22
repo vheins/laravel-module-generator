@@ -94,6 +94,7 @@ final class CreateModuleVueComponentForm extends GeneratorCommand
     {
         $fillable = $this->option('fillable');
         if (! is_null($fillable)) {
+            $arrays = [];
 
             foreach (explode(',', $fillable) as $var) {
                 $arrays[] = Str::camel(explode(':', $var)[0]).': null';
@@ -140,9 +141,8 @@ final class CreateModuleVueComponentForm extends GeneratorCommand
         }
         $unique = array_unique($splitNames);
         $unique = implode('-', $unique);
-        $fileName = Str::of($unique);
 
-        return $path.$Path->getPath().'/'.$fileName.'-form.vue';
+        return $path.$Path->getPath().'/'.strtolower($this->argument('name')).'-form.vue';
     }
 
     /**
@@ -172,6 +172,7 @@ final class CreateModuleVueComponentForm extends GeneratorCommand
         if (is_null($fillable)) {
             return '';
         }
+        $form = [];
         foreach (explode(',', $fillable) as $var) {
             $parts = explode(':', $var);
             if (count($parts) !== 2) {

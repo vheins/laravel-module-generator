@@ -12,7 +12,7 @@ class CreateApiCrud extends Command
      *
      * @var string
      */
-    protected $signature = 'create:api:crud {name} {--action}';
+    protected $signature = 'create:api:crud {name?} {--action}';
 
     /**
      * The console command description.
@@ -35,12 +35,16 @@ class CreateApiCrud extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         $name = $this->argument('name');
+        if (! is_string($name) || trim($name) === '') {
+            $this->error('Name argument is required.');
+
+            return self::FAILURE;
+        }
+
         $action = $this->option('action');
         $this->model = str_replace('/', '', $name);
         $this->varModel = Str::camel($this->model);

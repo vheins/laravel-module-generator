@@ -72,7 +72,7 @@ final class CreateModuleVueComponentLinkTest extends CommandTestCase
     public function test_link_filename_ignores_name_and_uses_module(): void
     {
         $this->artisan('create:module:vue:component:link', ['name' => 'Alpha', 'module' => $this->moduleName])->assertExitCode(0);
-        $this->artisan('create:module:vue:component:link', ['name' => 'Beta', 'module' => $this->moduleName])->assertExitCode(0);
+        $this->artisan('create:module:vue:component:link', ['name' => 'Beta', 'module' => $this->moduleName, '--fillable' => 'id:string'])->assertExitCode(0);
 
         $files = glob($this->getModulePath($this->moduleName).DIRECTORY_SEPARATOR.$this->getGeneratorPath('vue-components').DIRECTORY_SEPARATOR.'*-dashboard-link.vue') ?: [];
         // Should only create one file (based on module name), not two.

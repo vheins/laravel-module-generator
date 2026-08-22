@@ -126,7 +126,12 @@ final class CreateModuleVueComponentLink extends GeneratorCommand
 
         $Path = GenerateConfigReader::read('vue-components');
 
-        return $path.$Path->getPath().'/'.Str::of($this->getModuleName())->snake()->replace('_', '-').'-dashboard-link.vue';
+        $filePath = $path.$Path->getPath().'/'.Str::of($this->getModuleName())->snake()->replace('_', '-').'-dashboard-link.vue';
+        if (is_file($filePath)) {
+            unlink($filePath);
+        }
+
+        return $filePath;
     }
 
     /**

@@ -69,6 +69,7 @@ final class CreateModuleVueComponentTabTest extends CommandTestCase
         $this->artisan('create:module:vue:component:tab', [
             'name' => 'Beta',
             'module' => $this->moduleName,
+            '--fillable' => 'id:string',
         ])->assertExitCode(0);
 
         $files2 = glob($this->getModulePath($this->moduleName).'/'.$this->getGeneratorPath('vue-components').'/'.strtolower($this->moduleName).'-icon-tab.vue') ?: [];

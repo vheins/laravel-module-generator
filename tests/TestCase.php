@@ -6,6 +6,7 @@ namespace Tests;
 
 use Illuminate\Support\Facades\File;
 use Nwidart\Modules\LaravelModulesServiceProvider;
+use Nwidart\Modules\Support\Stub;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Vheins\LaravelModuleGenerator\Providers\LaravelModuleGeneratorServiceProvider;
 
@@ -31,6 +32,18 @@ abstract class TestCase extends BaseTestCase
         // Merge config for testing
         $this->app['config']->set('modules.paths.modules', $basePath);
         $this->app['config']->set('modules.namespace', 'Vheins');
+        $this->app['config']->set('modules.stubs.enabled', true);
+        $this->app['config']->set('modules.stubs.path', base_path('stubs/modular'));
+        Stub::setBasePath(base_path('stubs/modular'));
+
+        // The package's custom generator paths are nested config values. Laravel's
+        // mergeConfigFrom does not replace an already-loaded vendor array, so load
+        // the package's Vue/factory paths explicitly for the command fixtures.
+        $packageConfig = require dirname(__DIR__).'/modules.php';
+        $this->app['config']->set('modules.paths.generator', array_replace(
+            (array) $this->app['config']->get('modules.paths.generator', []),
+            $packageConfig['paths']['generator'],
+        ));
     }
 
     protected function getPackageProviders($app): array
@@ -59,6 +72,44 @@ abstract class TestCase extends BaseTestCase
         if (is_dir($path)) {
             File::deleteDirectory($path);
         }
+    }
+
+    /**
+     * Create and register a module fixture for commands that resolve modules by name.
+     *
+     * The package repository (Nwidart\Modules\FileRepository) only discovers modules
+     * from module.json manifests discovered by scan(). A bare directory tree is not
+     * enough: getModuleName() (ModuleCommandTrait) resolves via findOrFail() and
+     * throws ModuleNotFoundException when no manifest exists yet. This helper writes
+     * a minimal manifest and rescans the repository so generator commands can
+     * resolve the fixture module.
+     */
+    protected function ensureModuleRegistered(string $moduleName): void
+    {
+        $modulePath = $this->getModulePath($moduleName);
+
+        if (! is_dir($modulePath)) {
+            mkdir($modulePath, 0777, true);
+        }
+
+        $manifestPath = $modulePath.DIRECTORY_SEPARATOR.'module.json';
+        if (! is_file($manifestPath)) {
+            File::put($manifestPath, (string) json_encode([
+                'name' => $moduleName,
+                'alias' => strtolower($moduleName),
+                'description' => '',
+                'keywords' => [],
+                'priority' => 0,
+                'providers' => [],
+                'files' => [],
+            ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        }
+
+        $repository = app('modules');
+        if (method_exists($repository, 'resetModules')) {
+            $repository->resetModules();
+        }
+        $repository->scan();
     }
 
     protected function assertModuleExists(string $moduleName): void

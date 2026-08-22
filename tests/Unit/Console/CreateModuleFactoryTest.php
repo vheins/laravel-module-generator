@@ -69,7 +69,6 @@ final class CreateModuleFactoryTest extends CommandTestCase
             'name' => $name,
             'module' => $this->moduleName,
         ])->assertExitCode(0);
-
         $rel = $this->getGeneratorPath('factory');
         $this->assertModuleFileExists($rel.'/'.$name.'.php', $this->moduleName);
         $content = $this->getModuleFileContent($rel.'/'.$name.'.php', $this->moduleName);
@@ -84,7 +83,6 @@ final class CreateModuleFactoryTest extends CommandTestCase
             'module' => $this->moduleName,
             '--fillable' => 'title:string,price:decimal',
         ])->assertExitCode(0);
-
         $rel = $this->getGeneratorPath('factory');
         $content = $this->getModuleFileContent($rel.'/'.$name.'.php', $this->moduleName);
         $this->assertStringContainsString("'title'", $content);

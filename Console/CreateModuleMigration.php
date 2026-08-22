@@ -9,6 +9,7 @@ use Nwidart\Modules\Support\Migrations\NameParser;
 use Nwidart\Modules\Support\Migrations\SchemaParser;
 use Nwidart\Modules\Support\Stub;
 use Nwidart\Modules\Traits\ModuleCommandTrait;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -39,7 +40,7 @@ class CreateModuleMigration extends GeneratorCommand
     {
         return [
             ['basename', InputArgument::REQUIRED, 'The migration name will be created.'],
-            ['name', InputArgument::REQUIRED, 'The migration name will be created.'],
+            ['name', InputArgument::OPTIONAL, 'The migration name will be created.'],
             ['module', InputArgument::OPTIONAL, 'The name of module will be created.'],
         ];
     }
@@ -74,7 +75,7 @@ class CreateModuleMigration extends GeneratorCommand
      */
     protected function getTemplateContents()
     {
-        $parser = new NameParser($this->argument('name'));
+        $parser = new NameParser($this->getMigrationName());
         $tableNames = explode('_', $parser->getTableName());
         $splitNames = [];
         foreach ($tableNames as $tableName) {
@@ -160,7 +161,20 @@ class CreateModuleMigration extends GeneratorCommand
      */
     private function getClassName()
     {
-        return Str::studly($this->argument('name'));
+        return Str::studly($this->getMigrationName());
+    }
+
+    /**
+     * Resolve the migration operation name when it is omitted.
+     */
+    private function getMigrationName(): string
+    {
+        $name = $this->argument('name');
+        if ($name === null) {
+            return 'create_'.$this->argument('basename').'_table';
+        }
+
+        return (string) $name;
     }
 
     public function getClass()
@@ -173,6 +187,12 @@ class CreateModuleMigration extends GeneratorCommand
      */
     public function handle(): int
     {
+        $name = $this->argument('name');
+        if ($name !== null && (! is_string($name) || trim($name) === '')) {
+            $this->error('Name argument is required.');
+
+            return Command::FAILURE;
+        }
 
         $this->components->info('Creating migration...');
 

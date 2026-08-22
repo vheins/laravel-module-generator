@@ -68,6 +68,38 @@ abstract class CommandTestCase extends BaseTestCase
     }
 
     /**
+     * Ensure module-scoped generator commands resolve their dynamically created module.
+     *
+     * The module fixtures create their directory tree in each test's setUp(), but the
+     * package repository only discovers modules from module.json manifests. Every
+     * module-scoped invocation registers the target module first, then rescans the
+     * repository so findOrFail()/getModuleName() never hit ModuleNotFoundException.
+     *
+     * The repository cache is also reset before dispatch to mirror production
+     * behavior: generators that call clearCache() (e.g. create:module:seeder) reset
+     * the cached module map, so a stale entry from an earlier command in the same
+     * test would otherwise let a duplicate module.json pass through without a rescan.
+     */
+    public function artisan($command, $parameters = []): mixed
+    {
+        if (is_string($command) && str_starts_with($command, 'create:module:')) {
+            $moduleName = $parameters['module'] ?? null;
+            if (is_string($moduleName) && $moduleName !== '') {
+                $this->ensureModuleRegistered($moduleName);
+            }
+        }
+
+        if (is_string($command) && str_starts_with($command, 'create:module:')) {
+            $repository = app('modules');
+            if (method_exists($repository, 'resetModules')) {
+                $repository->resetModules();
+            }
+        }
+
+        return parent::artisan($command, $parameters);
+    }
+
+    /**
      * Get the output of the last executed command.
      */
     protected function getCommandOutput(): string

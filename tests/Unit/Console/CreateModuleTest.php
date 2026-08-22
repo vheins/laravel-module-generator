@@ -38,6 +38,6 @@ final class CreateModuleTest extends CommandTestCase
 
     public function test_invalid_blueprint_path_fails_gracefully(): void
     {
-        $this->artisan('create:module', ['--blueprint' => 'missing-blueprint-t03.yaml'])->assertExitCode(0);
+        $this->artisan('create:module', ['--blueprint' => 'missing-blueprint-t03.yaml'])->assertFailed();
     }
 }

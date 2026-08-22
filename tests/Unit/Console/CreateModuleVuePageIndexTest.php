@@ -62,7 +62,7 @@ final class CreateModuleVuePageIndexTest extends CommandTestCase
         $this->artisan('create:module:vue:page:index', [
             'name' => $this->moduleName,
             'module' => $this->moduleName,
-            '--fillable=title:string,body:text',
+            '--fillable' => 'title:string,body:text',
         ])->assertExitCode(0);
 
         $vuePagesRel = $this->getGeneratorPath('vue-pages');

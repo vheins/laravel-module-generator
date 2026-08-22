@@ -67,17 +67,20 @@ class CreateModuleFactory extends GeneratorCommand
     {
         $module = $this->laravel['modules']->findOrFail($this->getModuleName());
 
-        return (new Stub('/factory.stub', [
+        $template = (new Stub('/factory.stub', [
             'NAMESPACE' => $this->getClassNamespace($module),
             'NAME' => $this->getModelName(),
             'MODEL_NAMESPACE' => $this->getModelNamespace(),
             'FACTORY' => $this->getFactory(),
         ]))->render();
+
+        return str_replace('return [];', 'return '.$this->getFactory().';', $template);
     }
 
     private function getFactory()
     {
         $tabs = "\n\t\t\t";
+        $arrays = [];
         $fillable = $this->option('fillable');
         if (! is_null($fillable)) {
             foreach (explode(',', $fillable) as $var) {
@@ -133,7 +136,9 @@ class CreateModuleFactory extends GeneratorCommand
      */
     private function getFileName()
     {
-        return Str::studly($this->argument('name')).'Factory.php';
+        $name = Str::studly($this->argument('name'));
+
+        return Str::endsWith($name, 'Factory') ? $name.'.php' : $name.'Factory.php';
     }
 
     /**

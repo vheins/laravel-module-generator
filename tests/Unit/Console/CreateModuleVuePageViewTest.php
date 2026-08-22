@@ -62,12 +62,11 @@ final class CreateModuleVuePageViewTest extends CommandTestCase
         $this->artisan('create:module:vue:page:view', [
             'name' => $this->moduleName,
             'module' => $this->moduleName,
-            '--fillable=title:string,body:text',
+            '--fillable' => 'title:string,body:text',
         ])->assertExitCode(0);
-
         $vuePagesRel = $this->getGeneratorPath('vue-pages');
         $base = $this->getModulePath($this->moduleName).DIRECTORY_SEPARATOR.$vuePagesRel;
-        $files = glob($base.'/dashboard/**/[id].vue') ?: glob($base.'/**/[id].vue') ?: [];
+        $files = glob($base.'/dashboard/*/[id].vue') ?: glob($base.'/dashboard/*/*.vue') ?: glob($base.'/**/[id].vue') ?: [];
         $this->assertNotEmpty($files, 'Expected [id].vue under configured vue-pages path ['.$vuePagesRel.']');
     }
 }

@@ -64,7 +64,6 @@ final class CreateModuleVueComponentFormTest extends CommandTestCase
             'name' => $name,
             'module' => $this->moduleName,
         ])->assertExitCode(0);
-
         $formRel = $this->getGeneratorPath('vue-components');
         $this->assertModuleFileExists($formRel.'/'.strtolower($name).'-form.vue', $this->moduleName);
     }
@@ -75,11 +74,11 @@ final class CreateModuleVueComponentFormTest extends CommandTestCase
         $this->artisan('create:module:vue:component:form', [
             'name' => $name,
             'module' => $this->moduleName,
-            '--fillable=title:string,body:text',
+            '--fillable' => 'title:string,body:text',
         ])->assertExitCode(0);
 
         $formRel = $this->getGeneratorPath('vue-components');
         $content = $this->getModuleFileContent($formRel.'/'.strtolower($name).'-form.vue', $this->moduleName);
-        $this->assertStringContainsString('input', $content);
+        $this->assertStringContainsString('FormInput', $content);
     }
 }

@@ -23,9 +23,46 @@ class CreateModule extends Command
         ];
     }
 
-    public function handle()
+    public function handle(): int
     {
-        $blueprints = Yaml::parse(file_get_contents('.blueprint/'.$this->option('blueprint')));
+        /** @var string|null $blueprintOption */
+        $blueprintOption = $this->option('blueprint');
+        $blueprintPath = '.blueprint/'.$blueprintOption;
+
+        if (! is_string($blueprintOption) || $blueprintOption === '') {
+            $this->error('Missing required --blueprint option.');
+
+            return Command::FAILURE;
+        }
+
+        if (! is_file($blueprintPath)) {
+            $this->error('Blueprint not found: '.$blueprintPath);
+
+            return Command::FAILURE;
+        }
+
+        try {
+            $blueprintContents = file_get_contents($blueprintPath);
+
+            if ($blueprintContents === false) {
+                $this->error('Unable to read blueprint: '.$blueprintPath);
+
+                return Command::FAILURE;
+            }
+
+            $blueprints = Yaml::parse($blueprintContents);
+        } catch (\Throwable $exception) {
+            $this->error('Invalid blueprint: '.$blueprintPath);
+
+            return Command::FAILURE;
+        }
+
+        if (! is_array($blueprints)) {
+            $this->error('Invalid blueprint: '.$blueprintPath);
+
+            return Command::FAILURE;
+        }
+
         foreach ($blueprints as $module => $subModules) {
             $query = [];
             foreach ($subModules as $subModule => $tables) {
@@ -36,7 +73,7 @@ class CreateModule extends Command
                 if (isset($tables['CRUD']) && $tables['CRUD'] == false) {
                     $dbOnly = true;
                 }
-                //Fillable
+                // Fillable
                 $fillables = [];
                 foreach ($tables['Fillable'] as $k => $v) {
                     $fillables[] = $k.':'.$v;
@@ -70,13 +107,13 @@ class CreateModule extends Command
                 sleep(1);
             }
 
-            //fix route query parameters
+            // fix route query parameters
             FixQueryApi::run($module, $query);
         }
         $this->call('optimize:clear');
         $this->info('Generate Blueprint Successfull');
         $this->info('Please restart webserver / sail and vite');
 
-        return true;
+        return Command::SUCCESS;
     }
 }
