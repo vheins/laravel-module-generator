@@ -3,7 +3,7 @@
 namespace Vheins\LaravelModuleGenerator\Console;
 
 use Illuminate\Support\Str;
-use Nwidart\Modules\Commands\GeneratorCommand;
+use Nwidart\Modules\Commands\Make\GeneratorCommand;
 use Nwidart\Modules\Support\Config\GenerateConfigReader;
 use Nwidart\Modules\Support\Stub;
 use Nwidart\Modules\Traits\ModuleCommandTrait;
@@ -169,10 +169,17 @@ final class CreateModuleVueComponentFilter extends GeneratorCommand
     private function getFormInput()
     {
         $fillable = $this->option('fillable');
+        if (is_null($fillable)) {
+            return '';
+        }
         $form = [];
         foreach (explode(',', $fillable) as $var) {
-            $key = explode(':', $var)[1];
-            $val = explode(':', $var)[0];
+            $parts = explode(':', $var);
+            if (count($parts) !== 2) {
+                continue;
+            }
+            $key = $parts[1];
+            $val = $parts[0];
             if (in_array($key, [
                 'foreignId', 'foreignUuid', 'foreignUlid',
             ])) {
@@ -193,7 +200,7 @@ final class CreateModuleVueComponentFilter extends GeneratorCommand
             default:
                 $pathStub = '/vue/component.form.input.stub';
 
-                //Numerical
+                // Numerical
                 if (in_array($type, [
                     'bigInteger', 'mediumInteger', 'smallInteger', 'tinyInteger', 'integer', 'decimal', 'double', 'float',
                     'unsignedBigInteger', 'unsignedMediumInteger', 'unsignedSmallInteger', 'unsignedTinyInteger', 'unsignedInteger', 'unsignedDecimal', 'unsignedDouble', 'unsignedFloat',
@@ -201,14 +208,14 @@ final class CreateModuleVueComponentFilter extends GeneratorCommand
                     $pathStub = '/vue/component.form.number.stub';
                 }
 
-                //Textarea
+                // Textarea
                 if (in_array($type, [
                     'text', 'mediumText', 'longText', 'tinyText',
                 ])) {
                     $pathStub = '/vue/component.form.textarea.stub';
                 }
 
-                //Foreign Keys
+                // Foreign Keys
                 if (in_array($type, [
                     'foreignId', 'foreignUuid', 'foreignUlid',
                 ])) {

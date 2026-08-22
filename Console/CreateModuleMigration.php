@@ -3,7 +3,7 @@
 namespace Vheins\LaravelModuleGenerator\Console;
 
 use Illuminate\Support\Str;
-use Nwidart\Modules\Commands\GeneratorCommand;
+use Nwidart\Modules\Commands\Make\GeneratorCommand;
 use Nwidart\Modules\Support\Config\GenerateConfigReader;
 use Nwidart\Modules\Support\Migrations\NameParser;
 use Nwidart\Modules\Support\Migrations\SchemaParser;

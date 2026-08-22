@@ -3,7 +3,7 @@
 namespace Vheins\LaravelModuleGenerator\Console;
 
 use Illuminate\Support\Str;
-use Nwidart\Modules\Commands\GeneratorCommand;
+use Nwidart\Modules\Commands\Make\GeneratorCommand;
 use Nwidart\Modules\Support\Config\GenerateConfigReader;
 use Nwidart\Modules\Support\Stub;
 use Nwidart\Modules\Traits\CanClearModulesCache;
@@ -85,8 +85,15 @@ class CreateModuleSeeder extends GeneratorCommand
     private function getSeederName(): string
     {
         $string = $this->argument('name');
-        $string .= $this->option('master') ? 'Database' : '';
         $suffix = 'Seeder';
+
+        // Don't add Database suffix if already present (e.g., PostDatabaseSeeder)
+        if ($this->option('master')) {
+            $hasDatabase = stripos($string, 'Database') !== false;
+            if (!$hasDatabase) {
+                $string .= 'Database';
+            }
+        }
 
         if (strpos($string, $suffix) === false) {
             $string .= $suffix;

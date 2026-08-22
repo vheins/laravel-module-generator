@@ -3,7 +3,7 @@
 namespace Vheins\LaravelModuleGenerator\Console;
 
 use Illuminate\Support\Str;
-use Nwidart\Modules\Commands\GeneratorCommand;
+use Nwidart\Modules\Commands\Make\GeneratorCommand;
 use Nwidart\Modules\Support\Config\GenerateConfigReader;
 use Nwidart\Modules\Support\Stub;
 use Nwidart\Modules\Traits\ModuleCommandTrait;
@@ -134,7 +134,7 @@ class CreateModuleModel extends GeneratorCommand
         if ($this->option('controller') === true) {
             $controllerName = "{$this->getModelName()}Controller";
 
-            $this->call('module:make-controller', array_filter([
+            $this->call('create:module:controller', array_filter([
                 'controller' => $controllerName,
                 'module' => $this->argument('module'),
             ]));
@@ -151,7 +151,7 @@ class CreateModuleModel extends GeneratorCommand
         if ($this->option('seed') === true) {
             $seedName = "{$this->getModelName()}Seeder";
 
-            $this->call('module:make-seed', array_filter([
+            $this->call('create:module:seeder', array_filter([
                 'name' => $seedName,
                 'module' => $this->argument('module'),
             ]));
@@ -168,7 +168,7 @@ class CreateModuleModel extends GeneratorCommand
         if ($this->option('request') === true) {
             $requestName = "{$this->getModelName()}Request";
 
-            $this->call('module:make-request', array_filter([
+            $this->call('create:module:request', array_filter([
                 'name' => $requestName,
                 'module' => $this->argument('module'),
             ]));

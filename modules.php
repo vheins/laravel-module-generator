@@ -102,7 +102,7 @@ return [
         | Set the generate key to false to not generate that folder
         */
         'generator' => [
-            'action' => ['path' => 'Actions', 'generate' => false],
+            'action' => ['path' => 'Actions', 'generate' => true],
             'assets' => ['path' => 'resources/assets', 'generate' => false],
             'command' => ['path' => 'console', 'generate' => false],
             'component-view' => ['path' => 'resources/views/components', 'generate' => false],

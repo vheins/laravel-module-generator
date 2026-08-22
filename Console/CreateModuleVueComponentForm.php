@@ -3,7 +3,7 @@
 namespace Vheins\LaravelModuleGenerator\Console;
 
 use Illuminate\Support\Str;
-use Nwidart\Modules\Commands\GeneratorCommand;
+use Nwidart\Modules\Commands\Make\GeneratorCommand;
 use Nwidart\Modules\Support\Config\GenerateConfigReader;
 use Nwidart\Modules\Support\Stub;
 use Nwidart\Modules\Traits\ModuleCommandTrait;
@@ -169,9 +169,15 @@ final class CreateModuleVueComponentForm extends GeneratorCommand
     private function getFormInput()
     {
         $fillable = $this->option('fillable');
+        if (is_null($fillable)) {
+            return '';
+        }
         foreach (explode(',', $fillable) as $var) {
-            $keys = explode(':', $var);
-            $form[] = $this->getInputTemplateContents($keys[0], $keys[1]);
+            $parts = explode(':', $var);
+            if (count($parts) !== 2) {
+                continue;
+            }
+            $form[] = $this->getInputTemplateContents($parts[0], $parts[1]);
         }
 
         return implode("\n", $form);
@@ -187,7 +193,7 @@ final class CreateModuleVueComponentForm extends GeneratorCommand
             default:
                 $pathStub = '/vue/component.form.input.stub';
 
-                //Numerical
+                // Numerical
                 if (in_array($type, [
                     'bigInteger', 'mediumInteger', 'smallInteger', 'tinyInteger', 'integer', 'decimal', 'double', 'float',
                     'unsignedBigInteger', 'unsignedMediumInteger', 'unsignedSmallInteger', 'unsignedTinyInteger', 'unsignedInteger', 'unsignedDecimal', 'unsignedDouble', 'unsignedFloat',
@@ -195,14 +201,14 @@ final class CreateModuleVueComponentForm extends GeneratorCommand
                     $pathStub = '/vue/component.form.number.stub';
                 }
 
-                //Textarea
+                // Textarea
                 if (in_array($type, [
                     'text', 'mediumText', 'longText', 'tinyText',
                 ])) {
                     $pathStub = '/vue/component.form.textarea.stub';
                 }
 
-                //Foreign Keys
+                // Foreign Keys
                 if (in_array($type, [
                     'foreignId', 'foreignUuid', 'foreignUlid',
                 ])) {
