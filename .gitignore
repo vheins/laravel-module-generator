@@ -1,0 +1,37 @@
+# Dependencies
+/vendor/
+/node_modules/
+
+# Composer / package manager artifacts
+composer.phar
+
+# Testbench / Orchestra workbench scratch
+/.blueprint/
+.phpunit.cache/
+.phpunit.result.cache
+.phpunit.cache.php
+
+# Generated workbench modules (created at runtime by the generator)
+/modules/
+
+# Test / build / coverage output
+/coverage/
+/build/
+/.nyc_output/
+
+# Environment files
+.env
+.env.backup
+.env.*.local
+.env.testing
+
+# IDE / editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
