@@ -23,9 +23,41 @@ use Vheins\LaravelModuleGenerator\Console\CreateModuleVuePageCreate;
 use Vheins\LaravelModuleGenerator\Console\CreateModuleVuePageIndex;
 use Vheins\LaravelModuleGenerator\Console\CreateModuleVuePageView;
 use Vheins\LaravelModuleGenerator\Console\CreateModuleVueStore;
+use Vheins\LaravelModuleGenerator\Console\CreatePermission;
 
 class LaravelModuleGeneratorServiceProvider extends ServiceProvider
 {
+    /**
+     * Canonical inventory of console command classes registered by this provider.
+     *
+     * Single source of truth: configureCommands() registers these classes and
+     * the compatibility tests assert parity against this list, so adding or
+     * removing a command requires exactly one edit.
+     *
+     * @var list<class-string>
+     */
+    public const COMMANDS = [
+        CreateApiCrud::class,
+        CreateModule::class,
+        CreateModuleAction::class,
+        CreateModuleController::class,
+        CreateModuleMigration::class,
+        CreateModuleModel::class,
+        CreateModuleFactory::class,
+        CreateModuleRequest::class,
+        CreateModuleSub::class,
+        CreateModuleVueComponentFilter::class,
+        CreateModuleVueComponentForm::class,
+        CreateModuleVueComponentLink::class,
+        CreateModuleVueComponentTab::class,
+        CreateModuleVuePageCreate::class,
+        CreateModuleVuePageIndex::class,
+        CreateModuleVuePageView::class,
+        CreateModuleVueStore::class,
+        CreateModuleSeeder::class,
+        CreatePermission::class,
+    ];
+
     /**
      * @var string
      */
@@ -52,41 +84,20 @@ class LaravelModuleGeneratorServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
-    {
-    }
+    public function register() {}
 
     public function configureCommands()
     {
-        if (! $this->app->runningInConsole()) {
+        if (! $this->app->runningInConsole() && ! $this->app->runningUnitTests()) {
             return;
         }
 
-        $this->commands([
-            CreateApiCrud::class,
-            CreateModule::class,
-            CreateModuleAction::class,
-            CreateModuleController::class,
-            CreateModuleMigration::class,
-            CreateModuleModel::class,
-            CreateModuleFactory::class,
-            CreateModuleRequest::class,
-            CreateModuleSub::class,
-            CreateModuleVueComponentFilter::class,
-            CreateModuleVueComponentForm::class,
-            CreateModuleVueComponentLink::class,
-            CreateModuleVueComponentTab::class,
-            CreateModuleVuePageCreate::class,
-            CreateModuleVuePageIndex::class,
-            CreateModuleVuePageView::class,
-            CreateModuleVueStore::class,
-            CreateModuleSeeder::class,
-        ]);
+        $this->commands(self::COMMANDS);
 
         $actions = [
             CreatePostmanCollection::class,
         ];
-        if ($this->app->runningInConsole()) {
+        if ($this->app->runningInConsole() && ! $this->app->runningUnitTests()) {
             foreach ($actions as $class) {
                 Actions::registerCommandsForAction($class);
             }

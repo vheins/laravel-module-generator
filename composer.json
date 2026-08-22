@@ -14,9 +14,19 @@
         "Generator"
     ],
     "require": {
+        "php": "^8.2 || ^8.3 || ^8.4",
+        "laravel/framework": "^11.0 || ^12.0 || ^13.0",
         "lorisleiva/laravel-actions": "^v2.7.1",
-        "symfony/yaml": "^v6.3.3",
-        "nwidart/laravel-modules": "^v10.0.0"
+        "symfony/yaml": "^7.4 || ^8.0",
+        "nwidart/laravel-modules": "^v10.0 || ^v11.0 || ^v12.0 || ^v13.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^9.0 || ^10.0 || ^11.0",
+        "phpunit/phpunit": "^12.0",
+        "pestphp/pest": "^4.0",
+        "phpstan/phpstan": "^2.0",
+        "laravel/pint": "^1.16",
+        "mockery/mockery": "^1.6"
     },
     "extra": {
         "laravel": {
@@ -32,6 +42,22 @@
     "autoload": {
         "psr-4": {
             "Vheins\\LaravelModuleGenerator\\": ""
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "wikimedia/composer-merge-plugin": true,
+            "pestphp/pest-plugin": true,
+            "nunomaduro/collision": true,
+            "nunomaduro/termwind": true,
+            "laravel/pint": true,
+            "orchestra/sidekick": true,
+            "orchestra/canvas-core": true
         }
     }
 }

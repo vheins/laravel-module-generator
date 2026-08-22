@@ -1,0 +1,39 @@
+providers:
+  - Vheins\LaravelModuleGenerator\Providers\LaravelModuleGeneratorServiceProvider
+
+aliases:
+  ModuleGenerator: Vheins\LaravelModuleGenerator\Facades\LaravelModuleGenerator
+  LaravelModuleGenerator: Vheins\LaravelModuleGenerator\Facades\LaravelModuleGenerator
+
+# Database: SQLite in-memory
+# Testbench will use this when booting the Workbench skeleton via `testbench` CLI.
+# For PHPUnit tests the same connection is configured programmatically in tests/TestCase.php.
+migrations:
+  - database/migrations
+
+# Workbench skeleton configuration (Laravel 13.x)
+workbench:
+  # Use the default Testbench skeleton (vendor/orchestra/testbench-core/laravel)
+  # Override with a local path if you scaffold a custom skeleton:
+  # laravel: ./skeleton
+
+  install: true
+  welcome: false
+  discovers:
+    web: false
+    api: false
+    commands: false
+    views: false
+  build:
+    - create-sqlite-db
+    - migrate:refresh
+
+# Environment - sqlite in memory for testbench CLI commands
+env:
+  - APP_KEY=AckfSECXIvnK5r28GVIWUAxmbBSjTsmF
+  - APP_ENV=testing
+  - DB_CONNECTION=sqlite
+  - DB_DATABASE=:memory:
+  - CACHE_STORE=array
+  - SESSION_DRIVER=array
+  - QUEUE_CONNECTION=sync
