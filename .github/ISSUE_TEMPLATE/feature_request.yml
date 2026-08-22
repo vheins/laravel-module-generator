@@ -1,0 +1,50 @@
+name: Feature request
+description: Propose a new feature or enhancement
+title: "feat: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What problem does this solve? Who benefits?
+      placeholder: As a ... I want ... so that ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: Describe the proposed solution. Include command signatures, stub changes, or API sketches if applicable.
+      placeholder: |
+        New command: create:module:xyz {name} {module?} [--fillable=]
+        Stub: stubs/modular/xyz.stub
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Other approaches you considered and why they were not chosen.
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Links, prior art, or related issues.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I have searched existing issues and this is not a duplicate.
+          required: true
+        - label: I am willing to submit a PR for this feature.
+          required: false

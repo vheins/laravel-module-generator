@@ -1,0 +1,84 @@
+name: Bug report
+description: Report a reproducible bug
+title: "fix: "
+labels: [bug]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Clear description of the bug.
+      placeholder: What happened? What did you expect?
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: Minimal steps to reproduce — include commands run and blueprint/stub snippets if relevant.
+      placeholder: |
+        1. composer require vheins/laravel-module-generator
+        2. php artisan create:module:sub Invoice Product --fillable="title:string"
+        3. See error...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What should have happened?
+    validations:
+      required: true
+
+  - type: input
+    id: php_version
+    attributes:
+      label: PHP Version
+      placeholder: e.g. 8.4.2
+    validations:
+      required: true
+
+  - type: input
+    id: laravel_version
+    attributes:
+      label: Laravel Version
+      placeholder: e.g. 12.15.0
+    validations:
+      required: true
+
+  - type: input
+    id: package_version
+    attributes:
+      label: Package Version
+      placeholder: e.g. 1.0.0 or commit SHA
+    validations:
+      required: true
+
+  - type: input
+    id: modules_version
+    attributes:
+      label: nwidart/laravel-modules Version
+      placeholder: e.g. v12.0.3
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / Stack Trace
+      description: Paste relevant output (wrap in code fences).
+      render: shell
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I have searched existing issues and this is not a duplicate.
+          required: true
+        - label: I have tested on the latest `master`.
+          required: false

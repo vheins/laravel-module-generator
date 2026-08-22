@@ -1,0 +1,10 @@
+# Keep Packagist package lean — exclude dev/test artefacts from exports
+/tests              export-ignore
+/.github            export-ignore
+/testbench.yaml     export-ignore
+/phpunit.xml.dist   export-ignore
+/.phpunit.cache     export-ignore
+/.blueprint         export-ignore
+/.idea             export-ignore
+/.vscode           export-ignore
+/CONTRIBUTING.md     export-ignore
