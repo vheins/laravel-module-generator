@@ -35,3 +35,6 @@ composer.phar
 # OS files
 .DS_Store
 Thumbs.db
+
+# Session scratch
+tests/T03_*
