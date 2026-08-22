@@ -32,7 +32,8 @@
 
     <php>
         <env name="APP_ENV" value="testing"/>
-        <env name="APP_KEY" value="AckfSECXIvnK5r28GVIWUAxmbBSjTsmF"/>
+        <!-- testing-only dummy key (base64 of 32 zero bytes) — NOT a production secret -->
+        <env name="APP_KEY" value="base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="/>
         <env name="APP_DEBUG" value="true"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="CACHE_STORE" value="array"/>

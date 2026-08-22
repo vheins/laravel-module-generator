@@ -30,7 +30,8 @@ workbench:
 
 # Environment - sqlite in memory for testbench CLI commands
 env:
-  - APP_KEY=AckfSECXIvnK5r28GVIWUAxmbBSjTsmF
+  # testing-only dummy key (base64 of 32 zero bytes) — NOT a production secret
+  - APP_KEY=base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
   - APP_ENV=testing
   - DB_CONNECTION=sqlite
   - DB_DATABASE=:memory:
